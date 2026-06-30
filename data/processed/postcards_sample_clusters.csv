@@ -1,0 +1,201 @@
+id,name,origin_country,receiving_country,time,distance,date_sent,date_received,origin_region,receiving_region,origin_city,receiving_city,origin_iso,receiving_iso,cluster,x,y
+UZ-1,UZ-1.jpg,Uzbekistan,Netherlands,80,4861,2018-05-02,2018-07-21,Tashkent Region,Provincie Utrecht,Yalanghoch,Zeist,UZ,NL,5,0.17233104,0.2900541
+UZ-2,UZ-2.jpg,Uzbekistan,Latvia,27,3666,2020-03-03,2020-03-30,(general),Rīga,Tashkent,Riga,UZ,LV,7,0.18190593,0.24539134
+UZ-3,UZ-3.jpg,Uzbekistan,Netherlands,18,4759,2013-02-23,2013-03-13,Tashkent Region,Provincie Drenthe,Yalanghoch,Coevorden,UZ,NL,7,0.123725906,-0.014302072
+UZ-4,UZ-4.jpg,Uzbekistan,Germany,15,4754,2024-01-03,2024-01-18,Tashkent,Nordrhein-Westfalen,Tashkent,Essen,UZ,DE,4,-0.044384927,0.05822953
+UZ-5,UZ-5.jpg,Uzbekistan,Malaysia,28,5294,2023-12-05,2024-01-03,Tashkent,Selangor,Tashkent,Kuala Kubu Baharu,UZ,MY,5,0.28139886,0.12054538
+UZ-6,UZ-6.jpg,Uzbekistan,Russia,15,1646,2024-02-02,2024-02-17,Tashkent,Chelyabinsk Oblast,Tashkent,Chelyabinsk,UZ,RU,5,0.2009859,0.24338135
+UZ-7,UZ-7.jpg,Uzbekistan,Finland,38,3733,2017-06-09,2017-07-17,Tashkent,Central Finland,Tashkent,Keuruu,UZ,FI,7,0.13469929,0.27298272
+UZ-8,UZ-8.jpg,Uzbekistan,Germany,29,4770,2024-09-06,2024-10-05,Tashkent,Nordrhein-Westfalen,Tashkent,Köln,UZ,DE,0,-0.0064180265,0.29812872
+UZ-9,UZ-9.jpg,Uzbekistan,Belgium,35,4878,2014-10-13,2014-11-17,Tashkent Region,Flanders,Yalanghoch,Lommel,UZ,BE,5,0.18481772,0.18798478
+UZ-10,UZ-10.jpg,Uzbekistan,Russia,16,2429,2018-04-24,2018-05-10,Tashkent,Voronezh Oblast,Tashkent,Buturlinovka,UZ,RU,5,0.122436486,0.25493103
+UZ-11,UZ-11.jpg,Uzbekistan,Germany,8,4370,2023-02-05,2023-02-13,Tashkent Region,Bavaria,Yalanghoch,Passau,UZ,DE,7,0.045249216,0.23990737
+UZ-12,UZ-12.jpg,Uzbekistan,Netherlands,20,4921,2011-07-03,2011-07-23,Tashkent Region,Provincie Zuid-Holland,Yalanghoch,Leiden,UZ,NL,7,-0.103757165,0.19832206
+UZ-13,UZ-13.jpg,Uzbekistan,Russia,19,1945,2018-07-28,2018-08-16,Tashkent Region,Samara Oblast,Yalanghoch,Samara,UZ,RU,5,0.14666744,0.05512669
+UZ-14,UZ-14.jpg,Uzbekistan,Germany,13,4766,2024-03-01,2024-03-14,Tashkent,Nordrhein-Westfalen,Tashkent,Hilden,UZ,DE,0,-0.050859928,0.26845622
+UZ-15,UZ-15.jpg,Uzbekistan,Germany,237,4541,2008-12-13,2009-08-07,Tashkent Region,Schleswig-Holstein,Yalanghoch,Barmstedt,UZ,DE,5,0.16297618,0.22834755
+UZ-16,UZ-16.jpg,Uzbekistan,Russia,18,2835,2023-03-12,2023-03-29,(general),Moskva,Tashkent,Moscow,UZ,RU,7,0.09122176,0.31952256
+UZ-17,UZ-17.jpg,Uzbekistan,U.S.A.,49,9997,2023-03-06,2023-04-23,Tashkent Region,Michigan,Yalanghoch,Cheboygan,UZ,US,5,0.18363228,0.205242
+UZ-18,UZ-18.jpg,Uzbekistan,U.S.A.,14,10055,2018-04-20,2018-05-04,Tashkent Region,Washington,Yalanghoch,Seattle,UZ,US,5,0.08996643,0.07846941
+UZ-19,UZ-19.jpg,Uzbekistan,Germany,12,4785,2017-03-18,2017-03-30,Tashkent Region,Nordrhein-Westfalen,Yalanghoch,Neuss,UZ,DE,5,0.20477486,0.03762126
+UZ-20,UZ-20.jpg,Uzbekistan,Slovenia,25,4234,2024-04-04,2024-04-29,Tashkent,Ptuj,Tashkent,Ptuj,UZ,SI,0,0.04649743,0.21677351
+UZ-21,UZ-21.jpg,Uzbekistan,Netherlands,21,4842,2022-02-26,2022-03-19,Tashkent Region,Provincie Utrecht,Yalanghoch,Rhenen,UZ,NL,5,0.22025895,0.23175587
+UZ-22,UZ-22.jpg,Uzbekistan,Finland,24,3749,2021-07-22,2021-08-15,Tashkent Region,Pirkanmaa,Yalanghoch,Lempäälä,UZ,FI,5,0.1634389,0.17138228
+UZ-23,UZ-23.jpg,Uzbekistan,France,30,5075,2015-09-14,2015-10-14,Tashkent Region,Hauts-de-France,Yalanghoch,Arras,UZ,FR,7,-0.037440013,0.23275529
+UZ-24,UZ-24.jpg,Uzbekistan,China,25,4201,2012-02-18,2012-03-14,Tashkent Region,Hunan,Yalanghoch,Changsha,UZ,CN,7,0.11229622,0.3030305
+UZ-25,UZ-25.jpg,Uzbekistan,Belarus,17,3415,2024-05-17,2024-06-02,Tashkent,Minsk Oblast,Tashkent,Maladziečna,UZ,BY,4,-0.11531259,0.2976358
+UZ-26,UZ-26.jpg,Uzbekistan,Russia,32,3363,2024-06-30,2024-08-01,Tashkent,Sankt-Peterburg,Tashkent,Saint Petersburg,UZ,RU,5,0.18191928,0.10611128
+UZ-27,UZ-27.jpg,Uzbekistan,Germany,21,4344,2023-06-10,2023-07-01,Tashkent,Brandenburg,Tashkent,Treuenbrietzen,UZ,DE,0,-0.021397287,0.26713538
+UZ-28,UZ-28.jpg,Uzbekistan,Germany,18,4794,2022-07-28,2022-08-15,Tashkent Region,Nordrhein-Westfalen,Yalanghoch,Issum,UZ,DE,4,-0.21785955,0.09106677
+UZ-29,UZ-29.jpg,Uzbekistan,China,25,3937,2023-08-16,2023-09-10,Tashkent,Beijing Shi,Tashkent,Beijing,UZ,CN,7,-0.008799976,0.21793737
+UZ-30,UZ-30.jpg,Uzbekistan,U.S.A.,40,10292,2023-11-18,2023-12-28,Tashkent,Oregon,Tashkent,Portland,UZ,US,7,0.066824086,0.21003297
+UZ-31,UZ-31.jpg,Uzbekistan,Germany,9,4810,2024-02-02,2024-02-11,Tashkent,Nordrhein-Westfalen,Tashkent,Wegberg,UZ,DE,7,-0.051473845,0.13814005
+UZ-32,UZ-32.jpg,Uzbekistan,Japan,47,5689,2022-09-27,2022-11-13,Tashkent,Hyōgo,Tashkent,Kobe,UZ,JP,5,0.030102534,0.16920592
+UZ-33,UZ-33.jpg,Uzbekistan,U.S.A.,18,10307,2013-03-31,2013-04-18,Tashkent Region,Minnesota,Yalanghoch,Bloomington,UZ,US,5,0.20205885,0.15129204
+UZ-34,UZ-34.jpg,Uzbekistan,Russia,18,3246,2015-08-27,2015-09-14,Tashkent Region,Respublika Kareliya,Yalanghoch,Petrozavodsk,UZ,RU,4,-0.03391192,0.07033891
+UZ-35,UZ-35.jpg,Uzbekistan,Czechia,21,4267,2017-04-03,2017-04-24,Tashkent,Hlavní město Praha,Tashkent,Prague,UZ,CZ,5,0.10096541,0.08747926
+UZ-36,UZ-36.jpg,Uzbekistan,Russia,21,2240,2023-12-26,2024-01-16,Tashkent,Khanty-Mansiyskiy Avtonomnyy Okrug-Yugra,Tashkent,Surgut,UZ,RU,5,0.17339456,0.2535127
+UZ-37,UZ-37.jpg,Uzbekistan,Switzerland,44,4734,2015-07-23,2015-09-05,Tashkent,Kanton Zürich,Tashkent,Winterthur,UZ,CH,5,0.23603514,0.1212523
+UZ-38,UZ-38.jpg,Uzbekistan,China,87,3787,2024-05-21,2024-08-16,Tashkent,Guizhou,Tashkent,Guiyang,UZ,CN,7,0.031410214,0.19338723
+UZ-39,UZ-39.jpg,Uzbekistan,Russia,24,2835,2017-05-23,2017-06-16,(general),Moskva,Tashkent,Moscow,UZ,RU,5,0.12898836,0.149727
+UZ-40,UZ-40.jpg,Uzbekistan,Brazil,61,13446,2022-04-26,2022-06-26,Tashkent Region,Minas Gerais,Yalanghoch,Juiz de Fora,UZ,BR,7,0.003656338,0.23090552
+UZ-41,UZ-41.jpg,Uzbekistan,Canada,47,9815,2013-03-30,2013-05-17,Tashkent Region,Manitoba,Yalanghoch,Winnipeg,UZ,CA,7,0.12978798,0.19907598
+UZ-42,UZ-42.jpg,Uzbekistan,France,14,5140,2016-07-07,2016-07-21,Tashkent,Île-de-France,Tashkent,Montreuil,UZ,FR,7,0.09613832,0.31336048
+UZ-43,UZ-43.jpg,Uzbekistan,U.S.A.,229,10701,2024-04-05,2024-11-20,Tashkent,Indiana,Tashkent,Lawrenceburg,UZ,US,5,0.10562118,0.06719045
+UZ-44,UZ-44.jpg,Uzbekistan,Russia,29,6435,2024-08-23,2024-09-21,Tashkent,Kamchatka Krai,Tashkent,Petropavlovsk-Kamchatsky,UZ,RU,7,0.116082385,0.14176966
+UZ-45,UZ-45.jpg,Uzbekistan,Finland,30,3670,2023-09-21,2023-10-20,Tashkent,Uusimaa,Tashkent,Nurmijärvi,UZ,FI,7,0.06903485,0.30145118
+UZ-46,UZ-46.jpg,Uzbekistan,Italy,91,4756,2024-08-13,2024-11-12,Tashkent,Lombardia,Tashkent,Lipomo,UZ,IT,5,0.13911405,0.045266327
+UZ-47,UZ-47.jpg,Uzbekistan,Russia,44,2785,2019-12-03,2020-01-15,Tashkent Region,Moscow Oblast,Yalanghoch,Sergiyev Posad,UZ,RU,5,0.07045291,0.32635832
+UZ-48,UZ-48.jpg,Uzbekistan,Germany,16,4770,2015-03-13,2015-03-29,Tashkent,Nordrhein-Westfalen,Tashkent,Köln,UZ,DE,5,0.14476168,0.15829235
+UZ-49,UZ-49.jpg,Uzbekistan,U.S.A.,18,11134,2018-09-12,2018-09-29,Tashkent Region,California,Yalanghoch,San Francisco,UZ,US,5,0.08754026,0.14306632
+UZ-50,UZ-50.jpg,Uzbekistan,U.S.A.,44,10495,2023-04-18,2023-06-01,Tashkent,Indiana,Tashkent,Chesterton,UZ,US,7,0.035495326,0.20244955
+VA-1,VA-1.jpg,Vatican,Belgium,12,1263,2021-12-17,2021-12-29,(general),Flanders,Vatican City,Ostend,VA,BE,6,0.4191441,-0.1972593
+VA-2,VA-2.jpg,Vatican,Netherlands,16,1299,2021-11-06,2021-11-22,(general),Provincie Groningen,Vatican City,Stadskanaal,VA,NL,0,-0.029291023,0.30966368
+VA-3,VA-3.jpg,Vatican,Spain,9,1502,2021-11-06,2021-11-15,(general),Principality of Asturias,Vatican City,Oviedo,VA,ES,6,0.4171432,-0.3363628
+VA-4,VA-4.jpg,Vatican,Germany,8,954,2024-04-04,2024-04-12,(general),Hessen,Vatican City,Offenbach,VA,DE,6,0.43534827,-0.3235208
+VA-5,VA-5.jpg,Vatican,Netherlands,12,1267,2014-08-31,2014-09-12,(general),Provincie Zuid-Holland,Vatican City,Rotterdam,VA,NL,2,0.3470728,0.11703848
+VA-6,VA-6.jpg,Vatican,Germany,17,846,2024-10-01,2024-10-17,(general),Bavaria,Vatican City,Nürnberg,VA,DE,6,0.41038343,-0.17284802
+VA-7,VA-7.jpg,Vatican,Germany,18,1005,2023-09-23,2023-10-11,(general),Thuringia,Vatican City,Jena,VA,DE,6,0.42898265,-0.41491902
+VA-8,VA-8.jpg,Vatican,Taiwan,29,9713,2023-10-13,2023-11-11,(general),Kaohsiung,Vatican City,Kaohsiung,VA,TW,6,0.46445763,-0.34026396
+VA-9,VA-9.jpg,Vatican,Russia,53,2762,2022-11-14,2023-01-06,(general),Nizhny Novgorod Oblast,Vatican City,Nizhniy Novgorod,VA,RU,7,0.20806764,0.17388918
+VA-10,VA-10.jpg,Vatican,Australia,14,16216,2019-11-05,2019-11-19,(general),State of New South Wales,Vatican City,Lismore,VA,AU,6,0.46948186,-0.2515611
+VA-11,VA-11.jpg,Vatican,Malaysia,22,9865,2022-03-09,2022-03-31,(general),Johor,Vatican City,Muar,VA,MY,2,0.2519628,0.10917444
+VA-12,VA-12.jpg,Vatican,Germany,21,954,2022-02-14,2022-03-07,(general),Hessen,Vatican City,Offenbach,VA,DE,6,0.31369144,-0.38389498
+VA-13,VA-13.jpg,Vatican,Russia,41,2377,2019-10-18,2019-11-28,(general),Moskva,Vatican City,Moscow,VA,RU,2,0.28513443,0.098423906
+VA-14,VA-14.jpg,Vatican,Germany,9,1053,2025-05-17,2025-05-26,(general),Nordrhein-Westfalen,Vatican City,Siegen,VA,DE,6,0.37324163,-0.20846692
+VA-15,VA-15.jpg,Vatican,Finland,25,2176,2023-04-15,2023-05-10,(general),Varsinais-Suomi,Vatican City,Paimio,VA,FI,2,0.3369318,0.13715082
+VA-16,VA-16.jpg,Vatican,Algeria,42,686,2022-08-09,2022-09-20,(general),Annaba,Vatican City,Annaba,VA,DZ,6,0.4409599,-0.31128776
+VA-17,VA-17.jpg,Vatican,Russia,55,2461,2020-07-14,2020-09-07,(general),Stavropol Kray,Vatican City,Kislovodsk,VA,RU,2,0.14923397,0.135044
+VA-18,VA-18.jpg,Vatican,Thailand,83,8832,2022-04-23,2022-07-16,(general),Bangkok,Vatican City,Bangkok,VA,TH,6,0.43927133,-0.40729028
+VA-19,VA-19.jpg,Vatican,Germany,12,862,2024-10-23,2024-11-04,(general),Bavaria,Vatican City,Erlangen,VA,DE,6,0.37217546,-0.24269256
+VA-20,VA-20.jpg,Vatican,Germany,80,1140,2025-01-02,2025-03-23,(general),Nordrhein-Westfalen,Vatican City,Mülheim,VA,DE,2,0.42226002,-0.029127529
+VA-21,VA-21.jpg,Vatican,Russia,26,8986,2025-02-28,2025-03-26,(general),Sakhalin Oblast,Vatican City,Yuzhno-Sakhalinsk,VA,RU,6,0.0903794,-0.14713146
+VA-22,VA-22.jpg,Vatican,Thailand,27,8832,2025-05-17,2025-06-13,(general),Bangkok,Vatican City,Bangkok,VA,TH,6,0.3778359,-0.19720156
+VA-23,VA-23.jpg,Vatican,U.S.A.,15,8077,2023-03-02,2023-03-17,(general),Tennessee,Vatican City,Murfreesboro,VA,US,6,0.4629658,-0.386001
+VA-24,VA-24.jpg,Vatican,Belarus,10,1738,2024-07-10,2024-07-19,(general),Horad Minsk,Vatican City,Minsk,VA,BY,6,0.46613106,-0.38749346
+VA-25,VA-25.jpg,Vatican,U.S.A.,15,8416,2023-09-23,2023-10-08,(general),Kansas,Vatican City,Olathe,VA,US,6,0.35629788,-0.40850145
+VA-26,VA-26.jpg,Vatican,Türkiye,24,1724,2019-07-17,2019-08-10,(general),Ankara,Vatican City,Ankara,VA,TR,6,0.44284576,-0.39025578
+VA-27,VA-27.jpg,Vatican,Germany,26,696,2021-10-18,2021-11-13,(general),Bavaria,Vatican City,Munich,VA,DE,7,-0.10083148,0.095436126
+VA-28,VA-28.jpg,Vatican,Estonia,18,2125,2017-02-09,2017-02-28,(general),Harjumaa,Vatican City,Tallinn,VA,EE,2,0.35958582,0.06992441
+VA-29,VA-29.jpg,Vatican,Germany,10,1154,2025-01-01,2025-01-11,(general),Nordrhein-Westfalen,Vatican City,Ennigerloh,VA,DE,1,-0.03554633,-0.18624933
+VA-30,VA-30.jpg,Vatican,Luxembourg,42,995,2024-03-22,2024-05-03,(general),Canton d'Echternach,Vatican City,Echternach,VA,LU,6,0.16244708,-0.056843385
+VA-31,VA-31.jpg,Vatican,Germany,7,1139,2024-03-14,2024-03-22,(general),Nordrhein-Westfalen,Vatican City,Essen,VA,DE,6,0.4098843,-0.21436936
+VA-32,VA-32.jpg,Vatican,Germany,12,1108,2021-12-18,2021-12-30,(general),Nordrhein-Westfalen,Vatican City,Solingen,VA,DE,6,0.38283348,-0.15486093
+VA-33,VA-33.jpg,Vatican,Germany,9,1127,2020-01-29,2020-02-07,(general),Nordrhein-Westfalen,Vatican City,Heinsberg,VA,DE,6,0.44779915,-0.38671035
+VA-34,VA-34.jpg,Vatican,U.S.A.,23,9945,2025-01-02,2025-01-25,(general),Arizona,Vatican City,Tucson,VA,US,2,0.3898612,-0.07124639
+VA-35,VA-35.jpg,Vatican,Germany,6,1140,2023-04-13,2023-04-19,(general),Nordrhein-Westfalen,Vatican City,Tönisvorst,VA,DE,6,0.27397054,-0.1794597
+VA-36,VA-36.jpg,Vatican,Poland,12,1478,2020-01-29,2020-02-10,(general),Pomeranian Voivodeship,Vatican City,Kosakowo,VA,PL,6,0.29838952,-0.33473888
+VA-37,VA-37.jpg,Vatican,Finland,18,2273,2025-01-02,2025-01-20,(general),Pirkanmaa,Vatican City,Sastamala,VA,FI,2,0.38071594,0.04988378
+VA-38,VA-38.jpg,Vatican,Germany,16,1143,2023-06-02,2023-06-18,(general),Lower Saxony,Vatican City,Schöningen,VA,DE,6,0.14602967,-0.19837318
+VA-39,VA-39.jpg,Vatican,Czechia,16,925,2023-01-02,2023-01-18,(general),Středočeský kraj,Vatican City,Kladno,VA,CZ,6,0.36493498,-0.12454609
+VA-40,VA-40.jpg,Vatican,U.S.A.,19,10064,2023-09-23,2023-10-12,(general),California,Vatican City,Redwood City,VA,US,6,0.37688982,-0.41084254
+VA-41,VA-41.jpg,Vatican,Czechia,12,867,2025-01-02,2025-01-14,(general),Kraj Vysočina,Vatican City,Jihlava,VA,CZ,6,0.2673696,0.0040267385
+VA-42,VA-42.jpg,Vatican,Australia,25,16337,2025-05-16,2025-06-11,(general),State of New South Wales,Vatican City,Port Macquarie,VA,AU,6,0.3255151,-0.26099432
+VA-43,VA-43.jpg,Vatican,Poland,23,1417,2022-07-18,2022-08-10,(general),Masovian Voivodeship,Vatican City,Ostrołęka,VA,PL,6,0.37835377,-0.3096956
+VA-44,VA-44.jpg,Vatican,Russia,37,2356,2024-12-05,2025-01-11,(general),Moscow Oblast,Vatican City,Podolsk,VA,RU,6,0.39297816,-0.23220664
+VA-45,VA-45.jpg,Vatican,India,32,6923,2025-01-02,2025-02-03,(general),State of Karnataka,Vatican City,Piriyāpatna,VA,IN,2,0.454778,-0.06917715
+VA-46,VA-46.jpg,Vatican,Germany,15,1088,2022-07-18,2022-08-02,(general),Nordrhein-Westfalen,Vatican City,Köln,VA,DE,6,0.2765105,-0.19487275
+VA-47,VA-47.jpg,Vatican,U.S.A.,88,7745,2025-01-05,2025-04-02,(general),Illinois,Vatican City,Arlington Heights,VA,US,7,0.0209675,0.091768794
+VA-48,VA-48.jpg,Vatican,Germany,7,945,2024-03-14,2024-03-21,(general),Hessen,Vatican City,Langen,VA,DE,6,0.27979526,-0.020985471
+VA-49,VA-49.jpg,Vatican,Canada,22,7110,2023-02-18,2023-03-12,(general),Ontario,Vatican City,Oakville,VA,CA,6,0.36668864,-0.2236818
+VA-50,VA-50.jpg,Vatican,Portugal,15,1749,2021-11-09,2021-11-24,(general),Distrito de Aveiro,Vatican City,Águeda,VA,PT,2,0.2899381,0.017144991
+VE-1,VE-1.jpg,Venezuela,Russia,107,10384,2011-11-18,2012-03-04,Estado Mérida,Moskva,Mucutaray,Moscow,VE,RU,4,-0.12849855,0.15770808
+VE-2,VE-2.jpg,Venezuela,Canada,69,3613,2011-09-14,2011-11-22,Estado Falcón,Ontario,Punto Fijo,Windsor,VE,CA,1,-0.08779239,0.009516069
+VE-3,VE-3.jpg,Venezuela,Singapore,51,18420,2010-06-11,2010-08-01,Estado Aragua,(general),Maracay,Singapore,VE,SG,4,-0.07114821,0.08558144
+VE-4,VE-4.jpg,Venezuela,Russia,234,9400,2013-01-26,2013-09-16,Distrito Capital,Sankt-Peterburg,Caracas,Saint Petersburg,VE,RU,3,-0.34912765,-0.075391985
+VE-5,VE-5.jpg,Venezuela,Germany,220,8421,2013-01-22,2013-08-30,Miranda,Brandenburg,El Hatillo,Oranienburg,VE,DE,1,-0.023300111,-0.11345927
+VE-6,VE-6.jpg,Venezuela,U.S.A.,53,5830,2011-07-14,2011-09-04,Miranda,California,Los Teques,Los Angeles,VE,US,3,-0.26348466,-0.07709247
+VE-7,VE-7.jpg,Venezuela,U.S.A.,41,6492,2009-03-27,2009-05-07,Estado Carabobo,Oregon,Valencia,Beaverton,VE,US,1,-0.14089438,0.017074592
+VE-8,VE-8.jpg,Venezuela,Germany,130,8232,2014-02-27,2014-07-06,Estado Aragua,Lower Saxony,Maracay,Hannover,VE,DE,4,-0.13380119,0.18820913
+VE-9,VE-9.jpg,Venezuela,Brazil,54,3557,2010-01-16,2010-03-12,Estado Falcón,Piauí,Punto Fijo,Teresina,VE,BR,1,-0.07235637,0.024442064
+VE-10,VE-10.jpg,Venezuela,Russia,77,9565,2011-12-09,2012-02-24,Distrito Capital,Respublika Kareliya,Caracas,Petrozavodsk,VE,RU,7,-0.031760488,0.28186688
+VE-11,VE-11.jpg,Venezuela,Finland,54,9165,2009-02-02,2009-03-27,Estado Aragua,Uusimaa,Maracay,Sibbo,VE,FI,5,0.058443274,0.026042586
+VE-12,VE-12.jpg,Venezuela,Finland,47,9063,2009-02-05,2009-03-24,Estado Carabobo,Pirkanmaa,Valencia,Vammala,VE,FI,1,-0.20481604,-0.10326441
+VE-13,VE-13.jpg,Venezuela,Germany,55,8797,2012-01-20,2012-03-15,Estado Mérida,Bavaria,Mucutaray,Hof,VE,DE,4,-0.34410504,0.03365463
+VE-14,VE-14.jpg,Venezuela,Germany,146,8031,2013-03-04,2013-07-29,Estado Aragua,Nordrhein-Westfalen,Maracay,Köln,VE,DE,1,-0.012032,-0.056641273
+VE-15,VE-15.jpg,Venezuela,U.K.,218,7305,2012-04-02,2012-11-06,Estado Anzoátegui,England,Puerto La Cruz,Ashton-under-Lyne,VE,GB,4,-0.076809935,0.04510926
+VE-16,VE-16.jpg,Venezuela,Germany,17,7975,2009-10-12,2009-10-29,Estado Aragua,Nordrhein-Westfalen,Maracay,Monschau,VE,DE,1,-0.31801012,-0.20384067
+VE-17,VE-17.jpg,Venezuela,France,53,7616,2006-04-01,2006-05-24,Estado Nueva Esparta,Île-de-France,La Asunción,Paris,VE,FR,7,0.07567893,0.36645362
+VE-18,VE-18.jpg,Venezuela,France,82,8065,2013-10-21,2014-01-11,Estado Aragua,Grand Est,Maracay,Strasbourg,VE,FR,5,0.091924675,0.04488646
+VE-19,VE-19.jpg,Venezuela,Finland,47,9134,2009-10-14,2009-11-30,Estado Aragua,Kanta-Häme,Maracay,Riihimäki,VE,FI,4,-0.16837601,0.17718011
+VE-20,VE-20.jpg,Venezuela,U.S.A.,42,4540,2009-05-15,2009-06-26,Estado Carabobo,Minnesota,Valencia,Saint Paul,VE,US,3,-0.41716638,-0.16276234
+VE-21,VE-21.jpg,Venezuela,Brazil,96,4371,2014-02-13,2014-05-20,Miranda,São Paulo,San Antonio de Los Altos,São Paulo,VE,BR,4,-0.04156839,0.06388238
+VE-22,VE-22.jpg,Venezuela,Finland,222,9131,2013-12-13,2014-07-23,Miranda,Central Finland,San Antonio de Los Altos,Jyväskylä,VE,FI,4,-0.17547695,0.1877675
+VE-23,VE-23.jpg,Venezuela,Germany,75,8065,2011-03-13,2011-05-27,Estado Carabobo,Nordrhein-Westfalen,Valencia,Düsseldorf,VE,DE,4,-0.16428149,0.08803682
+VE-24,VE-24.jpg,Venezuela,Germany,25,8369,2010-03-13,2010-04-07,Estado Falcón,Thuringia,Punto Fijo,Hildburghausen,VE,DE,1,-0.09152419,0.0077009397
+VE-25,VE-25.jpg,Venezuela,Finland,79,8808,2012-04-17,2012-07-04,Estado Nueva Esparta,Pirkanmaa,Porlamar,Ylöjärvi,VE,FI,1,-0.06469825,-0.003127352
+VE-26,VE-26.jpg,Venezuela,Netherlands,30,7861,2009-03-30,2009-04-29,Estado Aragua,Provincie Zuid-Holland,Maracay,The Hague,VE,NL,7,-0.021438602,0.31685227
+VE-27,VE-27.jpg,Venezuela,U.S.A.,19,3650,2014-04-13,2014-05-02,Miranda,Texas,Chacao,Houston,VE,US,1,-0.24584141,-0.1305941
+VE-28,VE-28.jpg,Venezuela,Austria,83,8721,2010-11-25,2011-02-16,Estado Falcón,Steiermark,Punto Fijo,Frohnleiten,VE,AT,5,0.12578292,0.16612807
+VE-29,VE-29.jpg,Venezuela,Russia,43,10196,2013-10-06,2013-11-17,Estado Carabobo,Ryazan Oblast,Valencia,Ryazan’,VE,RU,4,-0.22441995,0.23174582
+VE-30,VE-30.jpg,Venezuela,Finland,59,9253,2009-01-25,2009-03-24,Estado Aragua,Pohjois-Savo,Maracay,Kuopio,VE,FI,5,-0.0065322123,0.11672936
+VE-31,VE-31.jpg,Venezuela,Belarus,220,9357,2012-05-14,2012-12-20,Distrito Capital,Horad Minsk,Caracas,Minsk,VE,BY,4,-0.17266273,-0.06175741
+VE-32,VE-32.jpg,Venezuela,Germany,76,8070,2014-02-06,2014-04-22,Estado Aragua,Baden-Württemberg,Maracay,Denzlingen,VE,DE,5,-0.027681185,0.11696032
+VE-33,VE-33.jpg,Venezuela,Netherlands,88,8032,2012-08-07,2012-11-03,Estado Falcón,Provincie Gelderland,Coro,Apeldoorn,VE,NL,5,-0.08358838,0.123342246
+VE-34,VE-34.jpg,Venezuela,Netherlands,24,8025,2009-10-12,2009-11-05,Estado Aragua,Provincie Overijssel,Maracay,Almelo,VE,NL,4,-0.32897845,0.055155423
+VE-35,VE-35.jpg,Venezuela,Italy,92,8131,2010-10-23,2011-01-23,Estado Aragua,Sardegna,Maracay,Cagliari,VE,IT,1,-0.15141013,0.006815859
+VE-36,VE-36.jpg,Venezuela,Finland,40,9150,2010-09-13,2010-10-23,Estado Aragua,Uusimaa,Maracay,Helsinki,VE,FI,4,-0.069675416,0.17063284
+VE-37,VE-37.jpg,Venezuela,Belarus,113,9221,2011-07-06,2011-10-27,Estado Aragua,Grodno Oblast,Maracay,Volkovysk,VE,BY,0,-0.055566367,0.22608818
+VE-38,VE-38.jpg,Venezuela,Russia,123,10020,2011-11-14,2012-03-16,Estado Falcón,Moskva,Punto Fijo,Moscow,VE,RU,2,0.19207692,0.061152637
+VE-39,VE-39.jpg,Venezuela,Italy,130,8493,2011-01-19,2011-05-29,Estado Falcón,Veneto,Punto Fijo,Belluno,VE,IT,7,0.06886818,0.30309215
+VE-40,VE-40.jpg,Venezuela,U.S.A.,62,3548,2009-07-01,2009-09-01,Estado Carabobo,Massachusetts,Valencia,Sharon,VE,US,4,-0.069609866,0.19273753
+VE-41,VE-41.jpg,Venezuela,Poland,103,8819,2012-07-19,2012-10-30,Estado Aragua,Opole Voivodeship,Maracay,Kluczbork,VE,PL,1,-0.26923442,-0.06475045
+VE-42,VE-42.jpg,Venezuela,Italy,156,8363,2014-02-06,2014-07-11,Estado Aragua,Veneto,Maracay,Padova,VE,IT,4,-0.3727731,0.093743436
+VE-43,VE-43.jpg,Venezuela,Russia,98,9988,2013-06-26,2013-10-02,Estado Aragua,Moskva,Maracay,Moscow,VE,RU,1,-0.10828666,0.014293137
+VE-44,VE-44.jpg,Venezuela,Japan,89,13890,2011-07-14,2011-10-11,Estado Falcón,Tokyo Prefecture,Punto Fijo,Tokyo,VE,JP,7,0.12503932,0.35436055
+VE-45,VE-45.jpg,Venezuela,Finland,144,9156,2011-04-02,2011-08-23,Estado Aragua,Central Finland,Maracay,Äänekoski,VE,FI,1,0.014268146,0.06616793
+VE-46,VE-46.jpg,Venezuela,Croatia,121,8682,2010-10-23,2011-02-21,Estado Aragua,City of Zagreb,Maracay,Zagreb,VE,HR,1,-0.24523315,-0.13194278
+VE-47,VE-47.jpg,Venezuela,Czechia,27,8554,2010-08-03,2010-08-30,Estado Aragua,Hlavní město Praha,Maracay,Prague,VE,CZ,7,0.11281936,0.30076155
+VE-48,VE-48.jpg,Venezuela,Germany,51,8102,2013-11-20,2014-01-10,Distrito Capital,Nordrhein-Westfalen,Caracas,Lübbecke,VE,DE,1,-0.28017247,-0.06613263
+VE-49,VE-49.jpg,Venezuela,Netherlands,75,7874,2010-02-24,2010-05-10,Estado Aragua,Provincie Zuid-Holland,Maracay,Noordwijk aan Zee,VE,NL,7,-0.009405364,0.14679357
+VE-50,VE-50.jpg,Venezuela,China,134,15361,2011-03-21,2011-08-01,Miranda,Sichuan,Los Teques,Chengdu,VE,CN,5,0.09870452,0.043418735
+VG-1,VG-1.jpg,Virgin Islands (British),Germany,35,7260,2019-05-13,2019-06-17,(general),Hessen,Road Town,Bad Homburg vor der Höhe,VG,DE,3,-0.42215425,-0.15640064
+VG-2,VG-2.jpg,Virgin Islands (British),Russia,84,9815,2023-03-25,2023-06-16,(general),Volgograd Oblast,Road Town,Volzhsky,VG,RU,7,0.041501947,0.29764655
+VG-3,VG-3.jpg,Virgin Islands (British),Australia,22,16666,2015-07-16,2015-08-07,(general),State of Victoria,Road Town,Swan Hill,VG,AU,3,-0.36676273,-0.22814068
+VG-4,VG-4.jpg,Virgin Islands (British),U.S.A.,21,3004,2018-10-18,2018-11-09,(general),Vermont,Road Town,Burlington,VG,US,3,-0.32573062,-0.20372452
+VG-5,VG-5.jpg,Virgin Islands (British),U.S.A.,22,6103,2023-03-24,2023-04-15,(general),Washington,Road Town,Seattle,VG,US,3,-0.26724592,-0.10752674
+VG-6,VG-6.jpg,Virgin Islands (British),Hong Kong,15,15486,2017-05-17,2017-06-01,(general),(general),Road Town,Hong Kong,VG,HK,3,-0.3468246,-0.25831935
+VG-7,VG-7.jpg,Virgin Islands (British),Belarus,17,8266,2016-02-19,2016-03-07,(general),Grodno Oblast,Road Town,Hrodna,VG,BY,3,-0.2798156,-0.12970039
+VG-8,VG-8.jpg,Virgin Islands (British),U.S.A.,15,5563,2023-03-25,2023-04-08,(general),California,Road Town,Burbank,VG,US,3,-0.42953202,-0.2486342
+VG-9,VG-9.jpg,Virgin Islands (British),Czechia,15,7673,2015-02-05,2015-02-20,(general),Hlavní město Praha,Road Town,Prague,VG,CZ,3,-0.45297265,-0.17275804
+VG-10,VG-10.jpg,Virgin Islands (British),Netherlands,13,7011,2015-09-28,2015-10-12,(general),Provincie Noord-Holland,Road Town,Amsterdam,VG,NL,4,-0.3087442,0.017384887
+VG-11,VG-11.jpg,Virgin Islands (British),Germany,12,7330,2015-05-20,2015-06-01,(general),Lower Saxony,Road Town,Visselhövede,VG,DE,3,-0.26620683,-0.056115683
+VG-12,VG-12.jpg,Virgin Islands (British),Ukraine,19,8930,2015-08-12,2015-08-31,(general),Odeska Oblast,Road Town,Odesa,VG,UA,7,-0.02466843,0.1648143
+VG-13,VG-13.jpg,Virgin Islands (British),Italy,8,7604,2015-11-02,2015-11-10,(general),Lazio,Road Town,Rome,VG,IT,3,-0.3623678,-0.22944485
+VG-14,VG-14.jpg,Virgin Islands (British),U.S.A.,24,6103,2018-10-18,2018-11-11,(general),Washington,Road Town,Seattle,VG,US,3,-0.27035788,-0.1552714
+VG-15,VG-15.jpg,Virgin Islands (British),Germany,23,7329,2016-11-25,2016-12-18,(general),Lower Saxony,Road Town,Wennigsen,VG,DE,3,-0.2937939,-0.064152345
+VG-16,VG-16.jpg,Virgin Islands (British),U.S.A.,35,3589,2019-12-31,2020-02-04,(general),Wisconsin,Road Town,Beaver Dam,VG,US,4,-0.29428437,0.046634246
+VG-17,VG-17.jpg,Virgin Islands (British),Austria,10,7691,2016-10-24,2016-11-03,(general),Oberösterreich,Road Town,Steyr,VG,AT,4,-0.37240088,-0.003393642
+VG-18,VG-18.jpg,Virgin Islands (British),Germany,46,7564,2023-03-24,2023-05-09,(general),Mecklenburg-Western Pomerania,Road Town,Poggendorf,VG,DE,7,0.02144663,0.1533011
+VG-19,VG-19.jpg,Virgin Islands (British),France,15,7039,2016-09-06,2016-09-21,(general),Auvergne-Rhône-Alpes,Road Town,Grenoble,VG,FR,3,-0.28712398,-0.080204144
+VG-20,VG-20.jpg,Virgin Islands (British),Germany,14,7333,2017-07-19,2017-08-02,(general),Baden-Württemberg,Road Town,Tettnang,VG,DE,3,-0.41229263,-0.30686304
+VG-21,VG-21.jpg,Virgin Islands (British),Lithuania,47,8140,2018-10-18,2018-12-04,(general),Tauragė County,Road Town,Taurage,VG,LT,3,-0.35409898,-0.17450495
+VG-22,VG-22.jpg,Virgin Islands (British),Netherlands,28,7154,2018-10-18,2018-11-15,(general),Provincie Groningen,Road Town,Stadskanaal,VG,NL,3,-0.39417696,-0.29880527
+VG-23,VG-23.jpg,Virgin Islands (British),Germany,12,7642,2018-02-07,2018-02-19,(general),Saxony,Road Town,Kamenz,VG,DE,4,-0.21441905,0.01880847
+VG-24,VG-24.jpg,Virgin Islands (British),U.S.A.,14,2573,2023-03-25,2023-04-07,(general),Virginia,Road Town,Arlington,VG,US,3,-0.27916235,-0.1315016
+VG-25,VG-25.jpg,Virgin Islands (British),U.S.A.,29,3513,2022-01-27,2022-02-25,(general),Missouri,Belle Vue,Columbia,VG,US,3,-0.45499054,-0.27429637
+VG-26,VG-26.jpg,Virgin Islands (British),Austria,13,7766,2018-02-07,2018-02-20,(general),Steiermark,Road Town,Stainz,VG,AT,3,-0.39001152,-0.26386583
+VG-27,VG-27.jpg,Virgin Islands (British),Canada,47,3153,2016-11-25,2017-01-11,(general),Ontario,Road Town,Guelph,VG,CA,3,-0.39843282,-0.18108444
+VG-28,VG-28.jpg,Virgin Islands (British),Spain,15,6280,2016-03-30,2016-04-14,(general),Comunidad de Madrid,Road Town,Alcalá de Henares,VG,ES,3,-0.38927743,-0.10497274
+VG-29,VG-29.jpg,Virgin Islands (British),Sweden,34,7841,2021-12-09,2022-01-12,(general),Stockholm County,Road Town,Stockholm,VG,SE,3,-0.40225378,-0.25380406
+VG-30,VG-30.jpg,Virgin Islands (British),China,56,14440,2019-12-31,2020-02-25,(general),Sichuan,Road Town,Chengdu Nongcun,VG,CN,3,-0.21003635,-0.2136631
+VG-31,VG-31.jpg,Virgin Islands (British),Canada,46,3072,2019-05-13,2019-06-28,(general),Prince Edward Island,Road Town,Murray Harbour,VG,CA,4,-0.24770807,0.014552142
+VG-32,VG-32.jpg,Virgin Islands (British),Germany,21,7134,2014-10-17,2014-11-06,(general),Nordrhein-Westfalen,Road Town,Düsseldorf,VG,DE,3,-0.32113263,-0.11299454
+VG-33,VG-33.jpg,Virgin Islands (British),Russia,73,8511,2016-04-28,2016-07-10,(general),Sankt-Peterburg,Road Town,Saint Petersburg,VG,RU,3,-0.35891846,-0.2845505
+VG-34,VG-34.jpg,Virgin Islands (British),Russia,50,11288,2014-11-20,2015-01-09,(general),Novosibirsk Oblast,Road Town,Novosibirsk,VG,RU,4,-0.4284875,-0.078844406
+VG-35,VG-35.jpg,Virgin Islands (British),U.S.A.,18,2555,2014-11-25,2014-12-13,(general),Maryland,Road Town,Annapolis,VG,US,3,-0.37840146,-0.2232569
+VG-36,VG-36.jpg,Virgin Islands (British),Canada,25,6503,2015-08-28,2015-09-22,(general),British Columbia,Road Town,Port McNeill,VG,CA,3,-0.31730786,-0.121029325
+VG-37,VG-37.jpg,Virgin Islands (British),Japan,11,13490,2016-05-30,2016-06-10,(general),Kanagawa,Road Town,Kawasaki,VG,JP,4,-0.097580776,0.18908364
+VG-38,VG-38.jpg,Virgin Islands (British),U.K.,7,6717,2015-12-15,2015-12-22,(general),England,Road Town,Maldon,VG,GB,3,-0.37228817,-0.20371476
+VG-39,VG-39.jpg,Virgin Islands (British),Latvia,12,8429,2015-06-05,2015-06-17,(general),Krāslavas novads,Road Town,Krāslava,VG,LV,3,-0.34831026,-0.2320023
+VG-40,VG-40.jpg,Virgin Islands (British),French Guiana,40,1840,2019-12-31,2020-02-10,(general),Guyane,Road Town,Saint-Laurent-du-Maroni,VG,GF,3,-0.32989094,-0.29808074
+VG-41,VG-41.jpg,Virgin Islands (British),Germany,11,7438,2016-02-19,2016-03-01,(general),Mecklenburg-Western Pomerania,Road Town,Hagenow,VG,DE,3,-0.32442325,-0.21161279
+VG-42,VG-42.jpg,Virgin Islands (British),Austria,10,7678,2016-02-19,2016-02-29,(general),Oberösterreich,Road Town,Linz,VG,AT,3,-0.29301578,-0.074982785
+VG-43,VG-43.jpg,Virgin Islands (British),Czechia,74,7562,2014-11-27,2015-02-09,(general),Karlovarský kraj,Road Town,Karlovy Vary,VG,CZ,4,-0.21520643,0.12759821
+VG-44,VG-44.jpg,Virgin Islands (British),Japan,10,13521,2019-12-12,2019-12-22,(general),Kanagawa,Road Town,Chigasaki,VG,JP,3,-0.36053562,-0.0627567
+VG-45,VG-45.jpg,Virgin Islands (British),Latvia,21,8223,2016-01-13,2016-02-03,(general),Rīga,Road Town,Riga,VG,LV,3,-0.29981363,-0.08799625
+VG-46,VG-46.jpg,Virgin Islands (British),Singapore,19,17485,2015-08-21,2015-09-09,(general),(general),Road Town,Singapore,VG,SG,4,-0.28507894,-0.0663646
+VG-47,VG-47.jpg,Virgin Islands (British),Russia,26,11462,2015-07-24,2015-08-19,(general),Krasnoyarskiy Kray,Road Town,Zheleznogorsk,VG,RU,4,-0.41763943,-0.054663733
+VG-48,VG-48.jpg,Virgin Islands (British),Poland,13,8105,2017-01-20,2017-02-02,(general),Masovian Voivodeship,Road Town,Warsaw,VG,PL,3,-0.33841664,-0.123491
+VG-49,VG-49.jpg,Virgin Islands (British),Finland,17,8242,2016-10-24,2016-11-10,(general),Central Finland,Road Town,Konnevesi,VG,FI,3,-0.29261142,-0.08922991
+VG-50,VG-50.jpg,Virgin Islands (British),Russia,82,9060,2023-03-25,2023-06-14,(general),Moskva,Road Town,Moscow,VG,RU,7,0.0048739184,0.29144755

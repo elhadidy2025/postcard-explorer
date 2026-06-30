@@ -1,0 +1,867 @@
+import { useEffect, useState } from "react";
+import {
+  CircleMarker,
+  MapContainer,
+  Polyline,
+  Popup,
+  TileLayer,
+  useMap,
+} from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import "./App.css";
+
+const API_BASE = "http://127.0.0.1:8000";
+const CLUSTER_PAGE_SIZE = 24;
+
+type Stats = {
+  total_postcards: number;
+  total_origin_countries: number;
+  total_receiving_countries: number;
+  min_distance: number;
+  max_distance: number;
+  avg_distance: number;
+};
+
+type Postcard = {
+  id: string;
+  name: string;
+  origin_country: string;
+  receiving_country: string;
+  origin_city: string;
+  receiving_city: string;
+  distance: number;
+  time: number;
+  date_sent: string;
+  date_received: string;
+  cluster?: number;
+  cluster_name?: string;
+  cluster_color?: string;
+  image_url?: string;
+};
+
+type FilterOptions = {
+  origin_countries: string[];
+  receiving_countries: string[];
+};
+
+type ClusterSample = {
+  id: string;
+  name: string;
+  origin_country: string;
+  receiving_country: string;
+  origin_city: string;
+  receiving_city: string;
+  image_url: string;
+};
+
+type ClusterOverview = {
+  cluster: number;
+  cluster_name: string;
+  cluster_color?: string;
+  count: number;
+  samples: ClusterSample[];
+};
+
+type ClusterPoint = Postcard & {
+  cluster: number;
+  cluster_name: string;
+  cluster_color: string;
+  image_url: string;
+  x: number;
+  y: number;
+};
+
+type RoutePath = {
+  id: string;
+  name: string;
+  origin_country: string;
+  receiving_country: string;
+  origin_city: string;
+  receiving_city: string;
+  origin_iso: string;
+  receiving_iso: string;
+  origin_lat: number;
+  origin_lon: number;
+  receiving_lat: number;
+  receiving_lon: number;
+  distance: number;
+  time: number;
+  date_sent: string;
+  date_received: string;
+  cluster: number;
+  cluster_name: string;
+  cluster_color: string;
+  image_url: string;
+};
+
+function RouteMapAutoFit({ routes }: { routes: RoutePath[] }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (routes.length === 0) return;
+
+    const bounds: [number, number][] = [];
+
+    routes.forEach((route) => {
+      bounds.push([route.origin_lat, route.origin_lon]);
+      bounds.push([route.receiving_lat, route.receiving_lon]);
+    });
+
+    map.fitBounds(bounds, {
+      padding: [35, 35],
+      maxZoom: 4,
+    });
+  }, [routes, map]);
+
+  return null;
+}
+
+function App() {
+  const [stats, setStats] = useState<Stats | null>(null);
+  const [postcards, setPostcards] = useState<Postcard[]>([]);
+  const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(null);
+
+  const [selectedOrigin, setSelectedOrigin] = useState("");
+  const [selectedReceiving, setSelectedReceiving] = useState("");
+  const [searchText, setSearchText] = useState("");
+  const [minDistance, setMinDistance] = useState("");
+  const [maxDistance, setMaxDistance] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const [totalMatches, setTotalMatches] = useState(0);
+  const [selectedPostcard, setSelectedPostcard] = useState<Postcard | null>(null);
+
+  const [clusterOverview, setClusterOverview] = useState<ClusterOverview[]>([]);
+  const [selectedCluster, setSelectedCluster] = useState<ClusterOverview | null>(
+    null
+  );
+
+  const [activeClusterFilter, setActiveClusterFilter] = useState<number | null>(
+    null
+  );
+
+  const [clusterImages, setClusterImages] = useState<ClusterPoint[]>([]);
+  const [selectedClusterImage, setSelectedClusterImage] =
+    useState<ClusterPoint | null>(null);
+
+  const [clusterOffset, setClusterOffset] = useState(0);
+  const [clusterTotal, setClusterTotal] = useState(0);
+  const [clusterHasPrevious, setClusterHasPrevious] = useState(false);
+  const [clusterHasNext, setClusterHasNext] = useState(false);
+
+  const [routes, setRoutes] = useState<RoutePath[]>([]);
+  const [routeTotalMatches, setRouteTotalMatches] = useState(0);
+  const [routeCount, setRouteCount] = useState(0);
+  const [selectedRoute, setSelectedRoute] = useState<RoutePath | null>(null);
+  const [routeLimit, setRouteLimit] = useState(300);
+
+  function addFilterParams(params: URLSearchParams) {
+    if (selectedOrigin) params.set("origin_country", selectedOrigin);
+    if (selectedReceiving) params.set("receiving_country", selectedReceiving);
+    if (searchText.trim()) params.set("search", searchText);
+    if (minDistance) params.set("min_distance", minDistance);
+    if (maxDistance) params.set("max_distance", maxDistance);
+    if (startDate) params.set("start_date", startDate);
+    if (endDate) params.set("end_date", endDate);
+
+    return params;
+  }
+
+  useEffect(() => {
+    fetch(`${API_BASE}/stats`)
+      .then((res) => res.json())
+      .then((data) => setStats(data));
+
+    fetch(`${API_BASE}/filter-options`)
+      .then((res) => res.json())
+      .then((data) => setFilterOptions(data));
+  }, []);
+
+  useEffect(() => {
+    const params = addFilterParams(new URLSearchParams());
+    params.set("limit", "20");
+
+    if (activeClusterFilter !== null) {
+      params.set("cluster", String(activeClusterFilter));
+    }
+
+    fetch(`${API_BASE}/postcards?${params.toString()}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setPostcards(data.postcards);
+        setTotalMatches(data.total_matches);
+        setSelectedPostcard(null);
+      });
+  }, [
+    selectedOrigin,
+    selectedReceiving,
+    searchText,
+    minDistance,
+    maxDistance,
+    startDate,
+    endDate,
+    activeClusterFilter,
+  ]);
+
+  useEffect(() => {
+    const params = addFilterParams(new URLSearchParams());
+
+    setSelectedCluster(null);
+    setActiveClusterFilter(null);
+    setClusterImages([]);
+    setSelectedClusterImage(null);
+    setClusterOffset(0);
+    setClusterTotal(0);
+    setClusterHasPrevious(false);
+    setClusterHasNext(false);
+
+    fetch(`${API_BASE}/image-cluster-overview?${params.toString()}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setClusterOverview(data.clusters);
+
+        if (data.clusters.length > 0) {
+          setSelectedCluster(data.clusters[0]);
+        }
+      });
+  }, [
+    selectedOrigin,
+    selectedReceiving,
+    searchText,
+    minDistance,
+    maxDistance,
+    startDate,
+    endDate,
+  ]);
+
+  useEffect(() => {
+    if (!selectedCluster) return;
+
+    const params = addFilterParams(new URLSearchParams());
+    params.set("cluster", String(selectedCluster.cluster));
+    params.set("limit", String(CLUSTER_PAGE_SIZE));
+    params.set("offset", String(clusterOffset));
+
+    fetch(`${API_BASE}/image-clusters?${params.toString()}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setClusterImages(data.points);
+        setClusterTotal(data.total_matches);
+        setClusterHasPrevious(data.has_previous);
+        setClusterHasNext(data.has_next);
+        setSelectedClusterImage(data.points[0] ?? null);
+      });
+  }, [
+    selectedCluster,
+    clusterOffset,
+    selectedOrigin,
+    selectedReceiving,
+    searchText,
+    minDistance,
+    maxDistance,
+    startDate,
+    endDate,
+  ]);
+
+  useEffect(() => {
+    const params = addFilterParams(new URLSearchParams());
+    params.set("limit", String(routeLimit));
+
+    if (activeClusterFilter !== null) {
+      params.set("cluster", String(activeClusterFilter));
+    }
+
+    fetch(`${API_BASE}/routes?${params.toString()}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setRoutes(data.routes);
+        setRouteTotalMatches(data.total_matches);
+        setRouteCount(data.count);
+        setSelectedRoute(null);
+      });
+  }, [
+    selectedOrigin,
+    selectedReceiving,
+    searchText,
+    minDistance,
+    maxDistance,
+    startDate,
+    endDate,
+    activeClusterFilter,
+    routeLimit,
+  ]);
+
+  function clearFilters() {
+    setSelectedOrigin("");
+    setSelectedReceiving("");
+    setSearchText("");
+    setMinDistance("");
+    setMaxDistance("");
+    setStartDate("");
+    setEndDate("");
+    setActiveClusterFilter(null);
+  }
+
+  function selectCluster(cluster: ClusterOverview) {
+    setSelectedCluster(cluster);
+    setActiveClusterFilter(cluster.cluster);
+    setClusterOffset(0);
+    setSelectedClusterImage(null);
+  }
+
+  function selectRoute(route: RoutePath) {
+    setSelectedRoute(route);
+
+    setSelectedPostcard({
+      id: route.id,
+      name: route.name,
+      origin_country: route.origin_country,
+      receiving_country: route.receiving_country,
+      origin_city: route.origin_city,
+      receiving_city: route.receiving_city,
+      distance: route.distance,
+      time: route.time,
+      date_sent: route.date_sent,
+      date_received: route.date_received,
+      cluster: route.cluster,
+      cluster_name: route.cluster_name,
+      cluster_color: route.cluster_color,
+      image_url: route.image_url,
+    });
+  }
+
+  function clearClusterSelection() {
+    setActiveClusterFilter(null);
+  }
+
+  function nextClusterPage() {
+    if (!clusterHasNext) return;
+    setClusterOffset((current) => current + CLUSTER_PAGE_SIZE);
+  }
+
+  function previousClusterPage() {
+    if (!clusterHasPrevious) return;
+    setClusterOffset((current) => Math.max(0, current - CLUSTER_PAGE_SIZE));
+  }
+
+  const showingStart = clusterTotal === 0 ? 0 : clusterOffset + 1;
+  const showingEnd = Math.min(clusterOffset + clusterImages.length, clusterTotal);
+
+  const activeClusterName =
+    activeClusterFilter === null
+      ? null
+      : clusterOverview.find((cluster) => cluster.cluster === activeClusterFilter)
+          ?.cluster_name;
+
+  return (
+    <div className="app">
+      <header className="header">
+        <div>
+          <h1>Postcard Explorer</h1>
+          <p>Visual Analytics of Postcrossing Data</p>
+        </div>
+      </header>
+
+      <section className="stats-grid">
+        <div className="stat-card">
+          <span>Total Postcards</span>
+          <strong>{stats ? stats.total_postcards : "..."}</strong>
+        </div>
+
+        <div className="stat-card">
+          <span>Origin Countries</span>
+          <strong>{stats ? stats.total_origin_countries : "..."}</strong>
+        </div>
+
+        <div className="stat-card">
+          <span>Receiving Countries</span>
+          <strong>{stats ? stats.total_receiving_countries : "..."}</strong>
+        </div>
+
+        <div className="stat-card">
+          <span>Average Distance</span>
+          <strong>{stats ? `${Math.round(stats.avg_distance)} km` : "..."}</strong>
+        </div>
+      </section>
+
+      <main className="layout">
+        <aside className="sidebar">
+          <h2>Filters & Controls</h2>
+
+          <label>Search</label>
+          <input
+            type="text"
+            placeholder="Search id, country, city..."
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+
+          <label>Origin country</label>
+          <select
+            value={selectedOrigin}
+            onChange={(e) => setSelectedOrigin(e.target.value)}
+          >
+            <option value="">All origins</option>
+            {filterOptions?.origin_countries.map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
+            ))}
+          </select>
+
+          <label>Receiving country</label>
+          <select
+            value={selectedReceiving}
+            onChange={(e) => setSelectedReceiving(e.target.value)}
+          >
+            <option value="">All receiving countries</option>
+            {filterOptions?.receiving_countries.map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
+            ))}
+          </select>
+
+          <label>Distance range km</label>
+          <div className="distance-row">
+            <input
+              type="number"
+              placeholder="Min"
+              value={minDistance}
+              onChange={(e) => setMinDistance(e.target.value)}
+            />
+
+            <input
+              type="number"
+              placeholder="Max"
+              value={maxDistance}
+              onChange={(e) => setMaxDistance(e.target.value)}
+            />
+          </div>
+
+          <label>Date sent</label>
+          <div className="date-row">
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </div>
+
+          <button className="clear-button" onClick={clearFilters}>
+            Clear filters
+          </button>
+
+          <p className="matches">
+            Active result: <strong>{totalMatches}</strong>
+          </p>
+
+          {activeClusterName && (
+            <div className="cluster-filter-note">
+              <p>
+                List and map filtered by cluster:
+                <br />
+                <strong>{activeClusterName}</strong>
+              </p>
+
+              <button onClick={clearClusterSelection}>
+                Clear cluster selection
+              </button>
+            </div>
+          )}
+
+          {selectedPostcard && (
+            <div className="selected-panel">
+              <h3>Selected Postcard</h3>
+
+              {selectedRoute && selectedRoute.id === selectedPostcard.id && (
+                <p className="selected-route-note">Selected from map route</p>
+              )}
+
+              {selectedPostcard.image_url && (
+                <img
+                  className="selected-postcard-image"
+                  src={`${API_BASE}${selectedPostcard.image_url}`}
+                  alt={selectedPostcard.id}
+                />
+              )}
+
+              <p>
+                <strong>{selectedPostcard.id}</strong>
+              </p>
+              <p>
+                {selectedPostcard.origin_country} →{" "}
+                {selectedPostcard.receiving_country}
+              </p>
+              <p>
+                {selectedPostcard.origin_city} →{" "}
+                {selectedPostcard.receiving_city}
+              </p>
+              <p>Distance: {selectedPostcard.distance} km</p>
+              <p>Travel time: {selectedPostcard.time} days</p>
+              <p>Sent: {selectedPostcard.date_sent}</p>
+              <p>Received: {selectedPostcard.date_received}</p>
+            </div>
+          )}
+        </aside>
+
+        <section className="content dashboard-content">
+          <section className="cluster-map-section">
+            <div className="cluster-header">
+              <div>
+                <h2>Image Cluster Map</h2>
+                <p>Visual topics discovered from the current filtered postcards.</p>
+              </div>
+            </div>
+
+            {clusterOverview.length === 0 ? (
+              <div className="empty-state">
+                <h3>No image clusters match the current filters</h3>
+                <p>Try changing or clearing the filters.</p>
+              </div>
+            ) : (
+              <div className="cluster-overview-grid">
+                {clusterOverview.map((cluster) => (
+                  <button
+                    className={`cluster-overview-card ${
+                      activeClusterFilter === cluster.cluster ? "selected" : ""
+                    }`}
+                    key={cluster.cluster}
+                    onClick={() => selectCluster(cluster)}
+                  >
+                    <div className="cluster-card-title">
+                      <div>
+                        <h3>{cluster.cluster_name}</h3>
+                        <span>{cluster.count} postcards</span>
+                      </div>
+                      <strong>{cluster.cluster}</strong>
+                    </div>
+
+                    <div className="cluster-sample-grid">
+                      {cluster.samples.slice(0, 6).map((sample) => (
+                        <img
+                          key={sample.id}
+                          src={`${API_BASE}${sample.image_url}`}
+                          alt={sample.id}
+                        />
+                      ))}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </section>
+
+          <section className="map-section">
+            <div className="map-header">
+              <div>
+                <h2>Postcard Travel Paths</h2>
+                <p>
+                  Showing {routeCount} routes from {routeTotalMatches} filtered
+                  postcards.
+                </p>
+              </div>
+
+              <div className="route-limit-control">
+                <label>Routes shown</label>
+                <select
+                  value={routeLimit}
+                  onChange={(e) => setRouteLimit(Number(e.target.value))}
+                >
+                  <option value={100}>100</option>
+                  <option value={300}>300</option>
+                  <option value={600}>600</option>
+                  <option value={1000}>1000</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="map-legend">
+              <strong>Route colors follow image clusters:</strong>
+
+              <div className="map-legend-items">
+                {clusterOverview.map((cluster) => (
+                  <span className="map-legend-item" key={cluster.cluster}>
+                    <span
+                      className="legend-color"
+                      style={{
+                        background: cluster.cluster_color || "#64748b",
+                      }}
+                    />
+                    {cluster.cluster_name}
+                  </span>
+                ))}
+              </div>
+
+              <div className="direction-legend">
+                <span>
+                  <span className="origin-dot" />
+                  Origin = colored dot
+                </span>
+
+                <span>
+                  <span className="receiving-dot" />
+                  Receiving = black dot
+                </span>
+              </div>
+            </div>
+
+            {routes.length === 0 ? (
+              <div className="empty-state">
+                <h3>No routes match the current filters</h3>
+                <p>Try changing or clearing the filters.</p>
+              </div>
+            ) : (
+              <MapContainer
+                center={[25, 10]}
+                zoom={2}
+                minZoom={2}
+                maxBounds={[
+                  [-85, -180],
+                  [85, 180],
+                ]}
+                maxBoundsViscosity={1.0}
+                scrollWheelZoom={true}
+                worldCopyJump={false}
+                className="route-map"
+              >
+                <TileLayer
+                  attribution="&copy; OpenStreetMap contributors"
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  noWrap={true}
+                />
+
+                <RouteMapAutoFit routes={routes} />
+
+                {routes.map((route) => (
+                  <Polyline
+                    key={`line-${route.id}`}
+                    positions={[
+                      [route.origin_lat, route.origin_lon],
+                      [route.receiving_lat, route.receiving_lon],
+                    ]}
+                    eventHandlers={{
+                      click: () => selectRoute(route),
+                    }}
+                    pathOptions={{
+                      color: route.cluster_color || "#2563eb",
+                      weight: selectedRoute?.id === route.id ? 5 : 2,
+                      opacity: selectedRoute?.id === route.id ? 1 : 0.65,
+                    }}
+                  >
+                    <Popup>
+                      <div className="route-popup">
+                        {route.image_url && (
+                          <img
+                            src={`${API_BASE}${route.image_url}`}
+                            alt={route.id}
+                          />
+                        )}
+
+                        <strong>{route.id}</strong>
+
+                        <p>
+                          {route.origin_country} → {route.receiving_country}
+                        </p>
+
+                        <p>
+                          {route.origin_city} → {route.receiving_city}
+                        </p>
+
+                        <p>Distance: {Math.round(route.distance)} km</p>
+                        <p>Travel time: {Math.round(route.time)} days</p>
+                        <p>Cluster: {route.cluster_name}</p>
+                      </div>
+                    </Popup>
+                  </Polyline>
+                ))}
+
+                {routes.map((route) => (
+                  <CircleMarker
+                    key={`origin-${route.id}`}
+                    center={[route.origin_lat, route.origin_lon]}
+                    radius={5}
+                    pathOptions={{
+                      color: "#ffffff",
+                      fillColor: route.cluster_color || "#2563eb",
+                      fillOpacity: 0.95,
+                      weight: 2,
+                    }}
+                  >
+                    <Popup>
+                      <strong>Origin</strong>
+                      <p>
+                        {route.origin_city}, {route.origin_country}
+                      </p>
+                    </Popup>
+                  </CircleMarker>
+                ))}
+
+                {routes.map((route) => (
+                  <CircleMarker
+                    key={`receiving-${route.id}`}
+                    center={[route.receiving_lat, route.receiving_lon]}
+                    radius={5}
+                    pathOptions={{
+                      color: "#ffffff",
+                      fillColor: "#111827",
+                      fillOpacity: 0.95,
+                      weight: 2,
+                    }}
+                  >
+                    <Popup>
+                      <strong>Receiving</strong>
+                      <p>
+                        {route.receiving_city}, {route.receiving_country}
+                      </p>
+                    </Popup>
+                  </CircleMarker>
+                ))}
+              </MapContainer>
+            )}
+          </section>
+
+          {selectedCluster && (
+            <section className="selected-cluster-panel">
+              <div className="cluster-gallery-header">
+                <div>
+                  <h2>{selectedCluster.cluster_name}</h2>
+                  <p>
+                    Showing {showingStart}–{showingEnd} of {clusterTotal} postcards
+                  </p>
+                </div>
+
+                <div className="pagination-actions">
+                  <button
+                    className="page-button"
+                    onClick={previousClusterPage}
+                    disabled={!clusterHasPrevious}
+                  >
+                    Previous
+                  </button>
+
+                  <button
+                    className="page-button"
+                    onClick={nextClusterPage}
+                    disabled={!clusterHasNext}
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+
+              <div className="selected-cluster-layout">
+                <div className="selected-samples">
+                  {clusterImages.map((image) => (
+                    <button
+                      className={`selected-sample-card ${
+                        selectedClusterImage?.id === image.id ? "selected" : ""
+                      }`}
+                      key={image.id}
+                      onClick={() => setSelectedClusterImage(image)}
+                    >
+                      <img src={`${API_BASE}${image.image_url}`} alt={image.id} />
+                      <strong>{image.id}</strong>
+                    </button>
+                  ))}
+                </div>
+
+                {selectedClusterImage && (
+                  <div className="selected-image-details">
+                    <h3>Selected Image</h3>
+                    <img
+                      src={`${API_BASE}${selectedClusterImage.image_url}`}
+                      alt={selectedClusterImage.id}
+                    />
+                    <p>
+                      <strong>{selectedClusterImage.id}</strong>
+                    </p>
+                    <p>
+                      {selectedClusterImage.origin_country} →{" "}
+                      {selectedClusterImage.receiving_country}
+                    </p>
+                    <p>
+                      {selectedClusterImage.origin_city} →{" "}
+                      {selectedClusterImage.receiving_city}
+                    </p>
+                    <p>Distance: {selectedClusterImage.distance} km</p>
+                    <p>Travel time: {selectedClusterImage.time} days</p>
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
+
+          <section className="metadata-section">
+            <h2>Postcards List</h2>
+
+            {postcards.length === 0 ? (
+              <div className="empty-state">
+                <h3>No postcards match the current filters</h3>
+                <p>
+                  Try changing the origin country, receiving country, date,
+                  distance, cluster, or clear all filters.
+                </p>
+              </div>
+            ) : (
+              <div className="postcard-list">
+                {postcards.map((card) => (
+                  <div
+                    className={`postcard-card ${
+                      selectedPostcard?.id === card.id ? "selected" : ""
+                    }`}
+                    key={card.id}
+                    onClick={() => setSelectedPostcard(card)}
+                  >
+                    {card.image_url && (
+                      <img
+                        className="postcard-thumbnail"
+                        src={`${API_BASE}${card.image_url}`}
+                        alt={card.id}
+                      />
+                    )}
+
+                    <div className="postcard-card-info">
+                      <h3>{card.id}</h3>
+
+                      <p>
+                        {card.origin_country} → {card.receiving_country}
+                      </p>
+
+                      <p>
+                        {card.origin_city} → {card.receiving_city}
+                      </p>
+
+                      <p>
+                        Distance: {card.distance} km | Time: {card.time} days
+                      </p>
+
+                      {card.cluster_name && (
+                        <p className="cluster-tag">
+                          Cluster: {card.cluster_name}
+                        </p>
+                      )}
+
+                      <small>
+                        Sent: {card.date_sent} | Received: {card.date_received}
+                      </small>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+        </section>
+      </main>
+    </div>
+  );
+}
+
+export default App;

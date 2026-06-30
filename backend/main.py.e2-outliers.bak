@@ -1,0 +1,856 @@
+from pathlib import Path
+
+import geonamescache
+import pandas as pd
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+
+app = FastAPI(title="Postcard Explorer API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+ROOT = Path(__file__).resolve().parents[1]
+DATA_PATH = ROOT / "data" / "data.json"
+CLUSTERS_PATH = ROOT / "data" / "processed" / "postcards_image_clusters.csv"
+IMAGE_DIR = ROOT / "data" / "Images"
+
+CLUSTER_NAMES = {
+    0: "Landmarks & City Architecture",
+    1: "Sunsets, Water & Calm Nature",
+    2: "Animals & Wildlife",
+    3: "Mixed Travel Postcards",
+    4: "Religious Landmarks & Collages",
+    5: "Art, Paintings & Illustrations",
+    6: "Mountains & Natural Landscapes",
+    7: "Decorative Objects & Flowers",
+    8: "Uzbekistan Architecture",
+    9: "Beaches, Islands & Sea Views",
+    10: "People, Culture & Activities",
+    11: "Maps, Flags & Graphic Cards",
+}
+
+CLUSTER_COLORS = {
+    0: "#2563eb",
+    1: "#0ea5e9",
+    2: "#16a34a",
+    3: "#f97316",
+    4: "#7c3aed",
+    5: "#db2777",
+    6: "#22c55e",
+    7: "#eab308",
+    8: "#0891b2",
+    9: "#06b6d4",
+    10: "#ef4444",
+    11: "#64748b",
+}
+
+app.mount("/images", StaticFiles(directory=IMAGE_DIR), name="images")
+
+
+def normalize_text(value) -> str:
+    return str(value).strip().lower()
+
+
+def normalize_city(value) -> str:
+    return (
+        str(value)
+        .strip()
+        .lower()
+        .replace(".", "")
+        .replace("-", " ")
+        .replace("_", " ")
+    )
+
+
+gc = geonamescache.GeonamesCache()
+COUNTRIES = gc.get_countries()
+CITIES = gc.get_cities()
+
+CITY_LOOKUP = {}
+
+for city in CITIES.values():
+    country_code = str(city.get("countrycode", "")).upper()
+    city_name = normalize_city(city.get("name", ""))
+
+    if not country_code or not city_name:
+        continue
+
+    CITY_LOOKUP[(country_code, city_name)] = (
+        float(city["latitude"]),
+        float(city["longitude"]),
+    )
+
+
+COUNTRY_NAME_TO_ISO = {}
+
+for iso_code, country in COUNTRIES.items():
+    COUNTRY_NAME_TO_ISO[normalize_text(country.get("name", ""))] = iso_code.upper()
+
+
+COUNTRY_ALIASES = {
+    "usa": "US",
+    "united states": "US",
+    "united states of america": "US",
+    "uk": "GB",
+    "united kingdom": "GB",
+    "russia": "RU",
+    "south korea": "KR",
+    "north korea": "KP",
+    "iran": "IR",
+    "vietnam": "VN",
+    "czech republic": "CZ",
+    "czechia": "CZ",
+    "vatican": "VA",
+    "vatican city": "VA",
+    "taiwan": "TW",
+    "moldova": "MD",
+    "syria": "SY",
+    "laos": "LA",
+    "bolivia": "BO",
+    "venezuela": "VE",
+    "tanzania": "TZ",
+}
+
+
+def load_data():
+    df = pd.read_json(DATA_PATH)
+    df = df.fillna("")
+    return df
+
+
+def load_cluster_data():
+    df = pd.read_csv(CLUSTERS_PATH)
+    df = df.fillna("")
+    df["cluster_name"] = df["cluster"].map(CLUSTER_NAMES)
+    df["cluster_color"] = df["cluster"].map(CLUSTER_COLORS)
+    df["image_url"] = "/images/" + df["name"].astype(str)
+    return df
+
+
+def get_country_iso(country_name, iso_value):
+    iso_value = str(iso_value).strip().upper()
+
+    if iso_value:
+        return iso_value
+
+    country_key = normalize_text(country_name)
+
+    if country_key in COUNTRY_ALIASES:
+        return COUNTRY_ALIASES[country_key]
+
+    return COUNTRY_NAME_TO_ISO.get(country_key, "")
+
+
+def get_city_coordinates(city_name, country_iso):
+    country_iso = str(country_iso).strip().upper()
+    city_key = normalize_city(city_name)
+
+    if not country_iso or not city_key:
+        return None
+
+    return CITY_LOOKUP.get((country_iso, city_key))
+
+
+def get_country_capital_coordinates(country_iso):
+    country_iso = str(country_iso).strip().upper()
+
+    if not country_iso:
+        return None
+
+    country = COUNTRIES.get(country_iso)
+
+    if not country:
+        return None
+
+    capital_name = country.get("capital", "")
+
+    if not capital_name:
+        return None
+
+    return get_city_coordinates(capital_name, country_iso)
+
+
+def get_best_coordinates(city_name, country_iso):
+    city_coordinates = get_city_coordinates(city_name, country_iso)
+
+    if city_coordinates:
+        return city_coordinates
+
+    return get_country_capital_coordinates(country_iso)
+
+
+def apply_filters(
+    df: pd.DataFrame,
+    origin_country: str | None = None,
+    receiving_country: str | None = None,
+    min_distance: float | None = None,
+    max_distance: float | None = None,
+    start_date: str | None = None,
+    end_date: str | None = None,
+    search: str | None = None,
+):
+    filtered_df = df.copy()
+
+    if origin_country and "origin_country" in filtered_df.columns:
+        filtered_df = filtered_df[
+            filtered_df["origin_country"].astype(str).str.strip().str.lower()
+            == normalize_text(origin_country)
+        ]
+
+    if receiving_country and "receiving_country" in filtered_df.columns:
+        filtered_df = filtered_df[
+            filtered_df["receiving_country"].astype(str).str.strip().str.lower()
+            == normalize_text(receiving_country)
+        ]
+
+    if min_distance is not None and "distance" in filtered_df.columns:
+        filtered_df = filtered_df[filtered_df["distance"] >= min_distance]
+
+    if max_distance is not None and "distance" in filtered_df.columns:
+        filtered_df = filtered_df[filtered_df["distance"] <= max_distance]
+
+    if start_date and "date_sent" in filtered_df.columns:
+        date_sent = pd.to_datetime(filtered_df["date_sent"], errors="coerce")
+        filtered_df = filtered_df[date_sent >= pd.to_datetime(start_date)]
+
+    if end_date and "date_sent" in filtered_df.columns:
+        date_sent = pd.to_datetime(filtered_df["date_sent"], errors="coerce")
+        filtered_df = filtered_df[date_sent <= pd.to_datetime(end_date)]
+
+    if search and search.strip():
+        search_columns = [
+            "id",
+            "name",
+            "origin_country",
+            "receiving_country",
+            "origin_city",
+            "receiving_city",
+            "origin_region",
+            "receiving_region",
+            "origin_iso",
+            "receiving_iso",
+        ]
+
+        existing_columns = [
+            column for column in search_columns if column in filtered_df.columns
+        ]
+
+        if existing_columns:
+            searchable_text = (
+                filtered_df[existing_columns]
+                .astype(str)
+                .agg(" ".join, axis=1)
+                .str.lower()
+                .str.replace(r"\s+", " ", regex=True)
+            )
+
+            search_terms = search.lower().strip().split()
+
+            mask = pd.Series(True, index=filtered_df.index)
+            for term in search_terms:
+                mask = mask & searchable_text.str.contains(
+                    term,
+                    regex=False,
+                    na=False,
+                )
+
+            filtered_df = filtered_df[mask]
+
+    return filtered_df
+
+
+@app.get("/")
+def home():
+    return {"message": "Postcard Explorer API is running"}
+
+
+@app.get("/stats")
+def get_stats():
+    df = load_data()
+
+    return {
+        "total_postcards": len(df),
+        "total_origin_countries": int(df["origin_country"].nunique()),
+        "total_receiving_countries": int(df["receiving_country"].nunique()),
+        "min_distance": float(df["distance"].min()),
+        "max_distance": float(df["distance"].max()),
+        "avg_distance": float(df["distance"].mean()),
+    }
+
+
+@app.get("/postcards")
+def get_postcards(
+    limit: int = 30,
+    origin_country: str | None = None,
+    receiving_country: str | None = None,
+    min_distance: float | None = None,
+    max_distance: float | None = None,
+    start_date: str | None = None,
+    end_date: str | None = None,
+    search: str | None = None,
+    cluster: int | None = None,
+):
+    df = load_cluster_data()
+
+    df = apply_filters(
+        df,
+        origin_country=origin_country,
+        receiving_country=receiving_country,
+        min_distance=min_distance,
+        max_distance=max_distance,
+        start_date=start_date,
+        end_date=end_date,
+        search=search,
+    )
+
+    if cluster is not None:
+        df = df[df["cluster"] == cluster]
+
+    postcards = df.head(limit).to_dict(orient="records")
+
+    return {
+        "total_matches": len(df),
+        "count": len(postcards),
+        "postcards": postcards,
+    }
+
+
+@app.get("/filter-options")
+def get_filter_options():
+    df = load_data()
+
+    origin_countries = sorted(
+        [country for country in df["origin_country"].unique().tolist() if country]
+    )
+
+    receiving_countries = sorted(
+        [country for country in df["receiving_country"].unique().tolist() if country]
+    )
+
+    return {
+        "origin_countries": origin_countries,
+        "receiving_countries": receiving_countries,
+    }
+
+
+@app.get("/image-clusters")
+def get_image_clusters(
+    limit: int = 24,
+    offset: int = 0,
+    cluster: int | None = None,
+    origin_country: str | None = None,
+    receiving_country: str | None = None,
+    min_distance: float | None = None,
+    max_distance: float | None = None,
+    start_date: str | None = None,
+    end_date: str | None = None,
+    search: str | None = None,
+):
+    df = load_cluster_data()
+
+    df = apply_filters(
+        df,
+        origin_country=origin_country,
+        receiving_country=receiving_country,
+        min_distance=min_distance,
+        max_distance=max_distance,
+        start_date=start_date,
+        end_date=end_date,
+        search=search,
+    )
+
+    if cluster is not None:
+        df = df[df["cluster"] == cluster]
+
+    total_matches = len(df)
+
+    page_df = df.iloc[offset : offset + limit]
+    points = page_df.to_dict(orient="records")
+
+    return {
+        "total_matches": total_matches,
+        "count": len(points),
+        "offset": offset,
+        "limit": limit,
+        "has_previous": offset > 0,
+        "has_next": offset + limit < total_matches,
+        "points": points,
+    }
+
+
+@app.get("/image-cluster-options")
+def get_image_cluster_options(
+    origin_country: str | None = None,
+    receiving_country: str | None = None,
+    min_distance: float | None = None,
+    max_distance: float | None = None,
+    start_date: str | None = None,
+    end_date: str | None = None,
+    search: str | None = None,
+):
+    df = load_cluster_data()
+
+    df = apply_filters(
+        df,
+        origin_country=origin_country,
+        receiving_country=receiving_country,
+        min_distance=min_distance,
+        max_distance=max_distance,
+        start_date=start_date,
+        end_date=end_date,
+        search=search,
+    )
+
+    cluster_counts = (
+        df["cluster"]
+        .value_counts()
+        .sort_index()
+        .reset_index()
+    )
+
+    cluster_counts.columns = ["cluster", "count"]
+    cluster_counts["cluster_name"] = cluster_counts["cluster"].map(CLUSTER_NAMES)
+    cluster_counts["cluster_color"] = cluster_counts["cluster"].map(CLUSTER_COLORS)
+
+    return {
+        "clusters": cluster_counts.to_dict(orient="records")
+    }
+
+
+@app.get("/image-cluster-overview")
+def get_image_cluster_overview(
+    origin_country: str | None = None,
+    receiving_country: str | None = None,
+    min_distance: float | None = None,
+    max_distance: float | None = None,
+    start_date: str | None = None,
+    end_date: str | None = None,
+    search: str | None = None,
+):
+    df = load_cluster_data()
+
+    df = apply_filters(
+        df,
+        origin_country=origin_country,
+        receiving_country=receiving_country,
+        min_distance=min_distance,
+        max_distance=max_distance,
+        start_date=start_date,
+        end_date=end_date,
+        search=search,
+    )
+
+    overview = []
+
+    for cluster_id in sorted(df["cluster"].unique()):
+        cluster_df = df[df["cluster"] == cluster_id]
+
+        samples = (
+            cluster_df
+            .head(6)[
+                [
+                    "id",
+                    "name",
+                    "origin_country",
+                    "receiving_country",
+                    "origin_city",
+                    "receiving_city",
+                    "image_url",
+                ]
+            ]
+            .to_dict(orient="records")
+        )
+
+        overview.append(
+            {
+                "cluster": int(cluster_id),
+                "cluster_name": CLUSTER_NAMES.get(
+                    int(cluster_id),
+                    f"Cluster {cluster_id}",
+                ),
+                "cluster_color": CLUSTER_COLORS.get(int(cluster_id), "#64748b"),
+                "count": int(len(cluster_df)),
+                "samples": samples,
+            }
+        )
+
+    return {
+        "total_matches": len(df),
+        "clusters": overview,
+    }
+
+
+@app.get("/routes")
+def get_routes(
+    limit: int = 300,
+    origin_country: str | None = None,
+    receiving_country: str | None = None,
+    min_distance: float | None = None,
+    max_distance: float | None = None,
+    start_date: str | None = None,
+    end_date: str | None = None,
+    search: str | None = None,
+    cluster: int | None = None,
+):
+    df = load_cluster_data()
+
+    df = apply_filters(
+        df,
+        origin_country=origin_country,
+        receiving_country=receiving_country,
+        min_distance=min_distance,
+        max_distance=max_distance,
+        start_date=start_date,
+        end_date=end_date,
+        search=search,
+    )
+
+    if cluster is not None:
+        df = df[df["cluster"] == cluster]
+
+    total_matches = len(df)
+
+    routes = []
+
+    for _, row in df.iterrows():
+        if len(routes) >= limit:
+            break
+
+        origin_iso = get_country_iso(
+            row.get("origin_country", ""),
+            row.get("origin_iso", ""),
+        )
+
+        receiving_iso = get_country_iso(
+            row.get("receiving_country", ""),
+            row.get("receiving_iso", ""),
+        )
+
+        origin_coordinates = get_best_coordinates(
+            row.get("origin_city", ""),
+            origin_iso,
+        )
+
+        receiving_coordinates = get_best_coordinates(
+            row.get("receiving_city", ""),
+            receiving_iso,
+        )
+
+        if not origin_coordinates or not receiving_coordinates:
+            continue
+
+        origin_lat, origin_lon = origin_coordinates
+        receiving_lat, receiving_lon = receiving_coordinates
+
+        cluster_id = int(row.get("cluster", -1))
+
+        routes.append(
+            {
+                "id": row.get("id", ""),
+                "name": row.get("name", ""),
+                "origin_country": row.get("origin_country", ""),
+                "receiving_country": row.get("receiving_country", ""),
+                "origin_city": row.get("origin_city", ""),
+                "receiving_city": row.get("receiving_city", ""),
+                "origin_iso": origin_iso,
+                "receiving_iso": receiving_iso,
+                "origin_lat": origin_lat,
+                "origin_lon": origin_lon,
+                "receiving_lat": receiving_lat,
+                "receiving_lon": receiving_lon,
+                "distance": float(row.get("distance", 0)),
+                "time": float(row.get("time", 0)),
+                "date_sent": row.get("date_sent", ""),
+                "date_received": row.get("date_received", ""),
+                "cluster": cluster_id,
+                "cluster_name": CLUSTER_NAMES.get(cluster_id, "Unknown cluster"),
+                "cluster_color": CLUSTER_COLORS.get(cluster_id, "#64748b"),
+                "image_url": row.get("image_url", ""),
+            }
+        )
+
+    return {
+        "total_matches": total_matches,
+        "count": len(routes),
+        "limit": limit,
+        "routes": routes,
+    }
+
+# === E1 GLOBAL SEARCH OVERRIDE START ===
+
+def apply_filters(
+    df,
+    origin_country=None,
+    receiving_country=None,
+    search=None,
+    min_distance=None,
+    max_distance=None,
+    start_date=None,
+    end_date=None,
+    cluster=None,
+):
+    """
+    E1 global search:
+    supports direct querying by postcard ID, image name, country, city,
+    region, ISO code, and visual theme / cluster name.
+    """
+    filtered = df.copy()
+
+    if origin_country:
+        filtered = filtered[filtered["origin_country"] == origin_country]
+
+    if receiving_country:
+        filtered = filtered[filtered["receiving_country"] == receiving_country]
+
+    if cluster is not None and str(cluster) != "":
+        if "cluster" in filtered.columns:
+            filtered = filtered[filtered["cluster"].astype(str) == str(cluster)]
+
+    if min_distance not in (None, ""):
+        filtered = filtered[filtered["distance"] >= float(min_distance)]
+
+    if max_distance not in (None, ""):
+        filtered = filtered[filtered["distance"] <= float(max_distance)]
+
+    if start_date:
+        if "date_sent" in filtered.columns:
+            filtered = filtered[pd.to_datetime(filtered["date_sent"], errors="coerce") >= pd.to_datetime(start_date)]
+
+    if end_date:
+        if "date_sent" in filtered.columns:
+            filtered = filtered[pd.to_datetime(filtered["date_sent"], errors="coerce") <= pd.to_datetime(end_date)]
+
+    if search and str(search).strip():
+        q = str(search).strip().lower()
+
+        search_columns = [
+            "id",
+            "name",
+            "origin_country",
+            "receiving_country",
+            "origin_city",
+            "receiving_city",
+            "origin_region",
+            "receiving_region",
+            "origin_iso",
+            "receiving_iso",
+            "cluster_name",
+        ]
+
+        mask = pd.Series(False, index=filtered.index)
+
+        for col in search_columns:
+            if col in filtered.columns:
+                mask = mask | filtered[col].fillna("").astype(str).str.lower().str.contains(q, regex=False)
+
+        # Search by cluster number
+        if "cluster" in filtered.columns:
+            mask = mask | filtered["cluster"].fillna("").astype(str).str.lower().str.contains(q, regex=False)
+
+        # If cluster_name is missing, derive it from CLUSTER_NAMES if available
+        if "cluster" in filtered.columns and "CLUSTER_NAMES" in globals():
+            derived_cluster_names = filtered["cluster"].map(CLUSTER_NAMES).fillna("").astype(str).str.lower()
+            mask = mask | derived_cluster_names.str.contains(q, regex=False)
+
+        # Helpful theme aliases for E1
+        theme_aliases = {
+            "beach": ["beach", "sea", "island", "ocean", "water"],
+            "nature": ["nature", "mountain", "landscape", "forest", "sunset"],
+            "architecture": ["architecture", "landmark", "city", "building"],
+            "animal": ["animal", "wildlife", "bird"],
+            "art": ["art", "painting", "illustration"],
+            "religion": ["religious", "church", "mosque", "temple"],
+            "map": ["map", "flag", "graphic"],
+            "people": ["people", "culture", "activity"],
+        }
+
+        if "cluster_name" in filtered.columns:
+            cluster_text = filtered["cluster_name"].fillna("").astype(str).str.lower()
+        elif "cluster" in filtered.columns and "CLUSTER_NAMES" in globals():
+            cluster_text = filtered["cluster"].map(CLUSTER_NAMES).fillna("").astype(str).str.lower()
+        else:
+            cluster_text = pd.Series("", index=filtered.index)
+
+        for alias, words in theme_aliases.items():
+            if q in words or q == alias:
+                for word in words:
+                    mask = mask | cluster_text.str.contains(word, regex=False)
+
+        filtered = filtered[mask]
+
+    return filtered
+
+# === E1 GLOBAL SEARCH OVERRIDE END ===
+
+# === E2 OUTLIERS ENDPOINT START ===
+
+@app.get("/outliers")
+def get_outliers(
+    origin_country: str | None = None,
+    receiving_country: str | None = None,
+    search: str | None = None,
+    min_distance: float | None = None,
+    max_distance: float | None = None,
+    start_date: str | None = None,
+    end_date: str | None = None,
+    cluster: str | None = None,
+    threshold: float = 2.0,
+    limit: int = 24,
+):
+    """
+    E2: detect weird / exceptional postcards.
+
+    Outlier score is based on z-scores for:
+    - travel distance
+    - travel time
+
+    A postcard is considered unusual if the maximum absolute z-score
+    is above the chosen threshold.
+    """
+    df = load_data()
+    cluster_df = load_cluster_data()
+
+    if "cluster" not in df.columns and cluster_df is not None:
+        df = df.merge(
+            cluster_df[
+                [
+                    "id",
+                    "cluster",
+                    "cluster_name",
+                    "cluster_color",
+                    "image_url",
+                ]
+            ],
+            on="id",
+            how="left",
+        )
+    elif cluster_df is not None:
+        merge_cols = ["id"]
+
+        for col in ["cluster_name", "cluster_color", "image_url"]:
+            if col not in df.columns and col in cluster_df.columns:
+                merge_cols.append(col)
+
+        if len(merge_cols) > 1:
+            df = df.merge(cluster_df[merge_cols], on="id", how="left")
+
+    filtered = apply_filters(
+        df,
+        origin_country=origin_country,
+        receiving_country=receiving_country,
+        search=search,
+        min_distance=min_distance,
+        max_distance=max_distance,
+        start_date=start_date,
+        end_date=end_date,
+        cluster=cluster,
+    ).copy()
+
+    total_filtered = len(filtered)
+
+    if total_filtered == 0:
+        return {
+            "outliers": [],
+            "count": 0,
+            "total_filtered": 0,
+            "threshold": threshold,
+        }
+
+    distance_mean = filtered["distance"].mean()
+    distance_std = filtered["distance"].std()
+
+    time_mean = filtered["time"].mean()
+    time_std = filtered["time"].std()
+
+    if not distance_std or pd.isna(distance_std):
+        distance_std = 1
+
+    if not time_std or pd.isna(time_std):
+        time_std = 1
+
+    filtered["distance_z"] = (filtered["distance"] - distance_mean) / distance_std
+    filtered["time_z"] = (filtered["time"] - time_mean) / time_std
+
+    filtered["outlier_score"] = filtered[
+        ["distance_z", "time_z"]
+    ].abs().max(axis=1)
+
+    def reason(row):
+        reasons = []
+
+        if abs(row["distance_z"]) >= threshold:
+            if row["distance_z"] > 0:
+                reasons.append("Very long distance")
+            else:
+                reasons.append("Very short distance")
+
+        if abs(row["time_z"]) >= threshold:
+            if row["time_z"] > 0:
+                reasons.append("Very long travel time")
+            else:
+                reasons.append("Very short travel time")
+
+        if not reasons:
+            reasons.append("Unusual combined pattern")
+
+        return ", ".join(reasons)
+
+    filtered["outlier_reason"] = filtered.apply(reason, axis=1)
+
+    outliers = filtered[filtered["outlier_score"] >= threshold].copy()
+    outliers = outliers.sort_values("outlier_score", ascending=False).head(limit)
+
+    if "image_url" not in outliers.columns:
+        outliers["image_url"] = ""
+
+    if "cluster_name" not in outliers.columns:
+        outliers["cluster_name"] = ""
+
+    if "cluster_color" not in outliers.columns:
+        outliers["cluster_color"] = "#64748b"
+
+    result_columns = [
+        "id",
+        "name",
+        "origin_country",
+        "receiving_country",
+        "origin_city",
+        "receiving_city",
+        "distance",
+        "time",
+        "date_sent",
+        "date_received",
+        "cluster",
+        "cluster_name",
+        "cluster_color",
+        "image_url",
+        "distance_z",
+        "time_z",
+        "outlier_score",
+        "outlier_reason",
+    ]
+
+    existing_columns = [col for col in result_columns if col in outliers.columns]
+
+    records = outliers[existing_columns].replace({float("nan"): None}).to_dict(
+        orient="records"
+    )
+
+    return {
+        "outliers": records,
+        "count": len(records),
+        "total_filtered": total_filtered,
+        "threshold": threshold,
+    }
+
+# === E2 OUTLIERS ENDPOINT END ===
